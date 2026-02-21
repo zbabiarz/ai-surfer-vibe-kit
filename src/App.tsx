@@ -149,114 +149,121 @@ export default function App() {
           onUseIdea={handleLoadIdea}
         />
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200">
-          <div className="flex items-center gap-2 mb-4">
-            <ExternalLink className="w-5 h-5 text-brand-400 dark:text-brand-300" />
-            <h2 className="text-2xl font-extrabold uppercase text-neutral-dark dark:text-gray-100">Vibe Coder Toolkit Quicklinks</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200 overflow-hidden">
+          <div className="bg-gradient-to-r from-brand-400 to-brand-500 dark:from-brand-500 dark:to-brand-600 px-6 py-3">
+            <div className="flex justify-center mb-2">
+              <div className="w-16 h-2 bg-white/30 rounded-full" />
+            </div>
+            <div className="flex items-center justify-center gap-2">
+              <ExternalLink className="w-5 h-5 text-white" />
+              <h2 className="text-2xl font-extrabold uppercase text-white">Vibe Coder Toolkit Quicklinks</h2>
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <a
-              href="https://bolt.new/?rid=l3uyub"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-brand-400 hover:bg-brand-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(247,138,140,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Bolt.new</span>
-            </a>
-            <a
-              href="https://wisprflow.ai/r?ZACH38"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-accent1-400 hover:bg-accent1-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(244,138,183,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Wispr Flow</span>
-            </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-neutral-dark hover:bg-neutral-dark/80 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(74,74,74,0.4)] transform hover:-translate-y-1 font-medium"
-            >
-              <Github className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">GitHub</span>
-            </a>
-            <a
-              href="https://theaisurfer.com/training?am_id=zachbabiarz372"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-accent2-400 hover:bg-accent2-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(218,123,180,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">AI Surfer Mastermind</span>
-            </a>
-            <a
-              href="https://21st.dev/community/components"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(2,132,199,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <Paintbrush2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Design Components & Usage</span>
-            </a>
-            <a
-              href="https://link.coachmatixmail.com/widget/booking/qZ3MgiU9ussrrr0wtCxc"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-accent3-400 hover:bg-accent3-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(200,113,196,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <Phone className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Book a Call with Zach</span>
-            </a>
-            <a
-              href="https://chat.whatsapp.com/JuUZxvRRZMsEBoZQbvbhDc"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-[#00F0FF] hover:bg-[#00d4e0] text-neutral-dark px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <Users className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Cohort Community</span>
-            </a>
-            <a
-              href="https://www.youtube.com/@Zach_Babiarz_AI"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(240,107,110,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <Youtube className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Zach's Youtube</span>
-            </a>
-            <a
-              href="https://link.coachmatixmail.com/widget/form/zyHqKCKcHdqw5ibKYT6v"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-accent1-500 hover:bg-accent1-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(240,109,163,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <Send className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Feedback Form</span>
-            </a>
-            <Link
-              to="/terminology-game"
-              className="group flex items-center justify-center gap-2 bg-accent2-500 hover:bg-accent2-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(208,96,163,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <Gamepad2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Terminology Game</span>
-            </Link>
-            <a
-              href="https://open.spotify.com/playlist/6ShbEV1621eRllS7ZL0JCM?si=f2tbX1sfQKap6YaBZ-DqgA&pi=OZ3Hqx86SUSeh"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 bg-[#1DB954] hover:bg-[#1aa34a] text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(29,185,84,0.6)] transform hover:-translate-y-1 font-medium"
-            >
-              <Music className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-              <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Zach's Vibes</span>
-            </a>
-            <IDEList
-              buttonClassName="group flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 font-medium w-full"
-              iconClassName="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1"
-              labelClassName="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2"
-            />
+          <div className="p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <a
+                href="https://bolt.new/?rid=l3uyub"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-brand-400 hover:bg-brand-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(247,138,140,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Bolt.new</span>
+              </a>
+              <a
+                href="https://wisprflow.ai/r?ZACH38"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-accent1-400 hover:bg-accent1-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(244,138,183,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Wispr Flow</span>
+              </a>
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-neutral-dark hover:bg-neutral-dark/80 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(74,74,74,0.4)] transform hover:-translate-y-1 font-medium"
+              >
+                <Github className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">GitHub</span>
+              </a>
+              <a
+                href="https://theaisurfer.com/training?am_id=zachbabiarz372"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-accent2-400 hover:bg-accent2-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(218,123,180,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">AI Surfer Mastermind</span>
+              </a>
+              <a
+                href="https://21st.dev/community/components"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(2,132,199,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <Paintbrush2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Design Components & Usage</span>
+              </a>
+              <a
+                href="https://chat.whatsapp.com/JuUZxvRRZMsEBoZQbvbhDc"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-[#00F0FF] hover:bg-[#00d4e0] text-neutral-dark px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <Users className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Cohort Community</span>
+              </a>
+              <a
+                href="https://link.coachmatixmail.com/widget/form/zyHqKCKcHdqw5ibKYT6v"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-accent1-500 hover:bg-accent1-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(240,109,163,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <Send className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Feedback Form</span>
+              </a>
+              <Link
+                to="/terminology-game"
+                className="group flex items-center justify-center gap-2 bg-accent2-500 hover:bg-accent2-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(208,96,163,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <Gamepad2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Terminology Game</span>
+              </Link>
+              <IDEList
+                buttonClassName="group flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 font-medium w-full"
+                iconClassName="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1"
+                labelClassName="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2"
+              />
+              <a
+                href="https://www.youtube.com/@Zach_Babiarz_AI"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(240,107,110,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <Youtube className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Zach's Youtube</span>
+              </a>
+              <a
+                href="https://open.spotify.com/playlist/6ShbEV1621eRllS7ZL0JCM?si=f2tbX1sfQKap6YaBZ-DqgA&pi=OZ3Hqx86SUSeh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-[#1DB954] hover:bg-[#1aa34a] text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(29,185,84,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <Music className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Zach's Vibes</span>
+              </a>
+              <a
+                href="https://link.coachmatixmail.com/widget/booking/qZ3MgiU9ussrrr0wtCxc"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-accent3-400 hover:bg-accent3-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(200,113,196,0.6)] transform hover:-translate-y-1 font-medium"
+              >
+                <Phone className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Book a Call with Zach</span>
+              </a>
+            </div>
           </div>
         </div>
 
