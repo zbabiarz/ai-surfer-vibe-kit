@@ -26,6 +26,7 @@ interface Competitor {
   url: string;
   pricing: string;
   weakness: string;
+  description: string;
 }
 
 interface ValidationResult {
@@ -39,6 +40,8 @@ interface ValidationResult {
   };
   competitors: Competitor[];
   redditSignals: string[];
+  marketTrends: string[];
+  searchInsights: string;
   yourEdge: string;
   biggestRisk: string;
   pivotSuggestions: string[];
@@ -47,34 +50,38 @@ interface ValidationResult {
 
 const SYSTEM_PROMPT = `You are a ruthlessly honest startup analyst and market researcher. Your job is to validate app ideas before founders waste time building something nobody wants.
 
-Analyze the provided app idea and return a JSON scorecard. Be specific, cite real competitors, and give actionable feedback.
+You will be given LIVE WEB RESEARCH gathered specifically for this idea, followed by the app idea itself. Use the research to ground your analysis in real, current data.
 
-CONSISTENCY REQUIREMENT: You must apply the scoring criteria mechanically and deterministically. For identical inputs you must always produce identical scores. Do not vary your scores between runs. Commit to a score and do not second-guess it.
+CONSISTENCY REQUIREMENT: Apply scoring criteria mechanically and deterministically. For identical inputs always produce identical scores.
 
 IMPORTANT SCORING GUIDELINES:
-- marketNeed (1-10): How badly do people need this? Look for evidence of existing demand, pain points being discussed online, and whether people are actively searching for solutions.
-- competition (1-10): Higher score = BETTER for the founder. 10 means blue ocean with no competitors, 1 means saturated market with dominant players. Consider market saturation and barriers to entry.
-- monetization (1-10): How viable is the revenue model? Consider willingness to pay, pricing power, and recurring revenue potential.
-- feasibility (1-10): Can a solo developer or small team build this with no-code/low-code tools? Consider technical complexity and time to MVP.
+- marketNeed (1-10): How badly do people need this? Use the research to identify evidence of existing demand and pain points.
+- competition (1-10): Higher score = BETTER for the founder. 10 means blue ocean, 1 means saturated with dominant players. Use the research to assess actual market saturation.
+- monetization (1-10): How viable is the revenue model? Consider willingness to pay and pricing benchmarks from the research.
+- feasibility (1-10): Can a solo developer or small team build this? Consider technical complexity and time to MVP.
 
-overallScore calculation: You MUST compute this exactly: (marketNeed * 0.30) + (competition * 0.20) + (monetization * 0.30) + (feasibility * 0.20), then multiply by 10 and round to the nearest integer. Do not estimate or approximate this value — calculate it precisely from the four sub-scores you assign.
+overallScore calculation: Compute EXACTLY: (marketNeed * 0.30) + (competition * 0.20) + (monetization * 0.30) + (feasibility * 0.20), then multiply by 10 and round to nearest integer.
 
 verdict rules:
 - "GO" if overallScore >= 70
 - "MAYBE" if overallScore >= 50 and < 70
 - "PIVOT" if overallScore < 50
 
-For competitors: List 2-4 REAL companies that exist today. Include their actual website URLs, approximate pricing, and a genuine weakness the new app could exploit.
+For competitors: Use the web research to identify 2-4 REAL companies. Include their actual website URLs, approximate pricing, a genuine weakness, and a one-sentence description of what they do.
 
-For redditSignals: Paraphrase 3-5 realistic pain points that people commonly express about this problem space. Make them sound like real user complaints.
+For redditSignals: Extract 3-5 real pain points from the research about this problem space. These should be grounded in actual user complaints found in the research.
 
-For yourEdge: Write 2-3 sentences about what unique angle this specific app idea could take to differentiate.
+For marketTrends: Identify 2-3 current market trends relevant to this idea from the research. Format each as a concise bullet (1-2 sentences).
 
-For biggestRisk: Be honest about the #1 thing that could make this fail.
+For searchInsights: Write 2-3 sentences summarizing the most important things the web research revealed that influenced your analysis.
 
-For pivotSuggestions: Only include these if overallScore < 60. Suggest 2-3 alternative directions that might be more viable.
+For yourEdge: 2-3 sentences about what unique angle this app could take based on gaps identified in the research.
 
-For quickWin: Give ONE specific, actionable next step the founder should take immediately.
+For biggestRisk: The #1 thing that could make this fail, informed by the research.
+
+For pivotSuggestions: Only include if overallScore < 60. Suggest 2-3 alternative directions.
+
+For quickWin: ONE specific, actionable next step the founder should take immediately.
 
 Return ONLY valid JSON matching this exact structure:
 {
@@ -86,13 +93,60 @@ Return ONLY valid JSON matching this exact structure:
     "monetization": { "score": number, "reason": string },
     "feasibility": { "score": number, "reason": string }
   },
-  "competitors": [{ "name": string, "url": string, "pricing": string, "weakness": string }],
+  "competitors": [{ "name": string, "url": string, "pricing": string, "weakness": string, "description": string }],
   "redditSignals": [string],
+  "marketTrends": [string],
+  "searchInsights": string,
   "yourEdge": string,
   "biggestRisk": string,
   "pivotSuggestions": [string],
   "quickWin": string
 }`;
+
+async function runWebResearch(apiKey: string, appIdea: string): Promise<string> {
+  const researchPrompt = `Research the following app idea and provide comprehensive market intelligence:
+
+${appIdea}
+
+Please search the web and find:
+1. TOP COMPETITORS: What are the leading existing apps/tools solving this problem? Include their names, websites, approximate pricing, user reviews, and notable weaknesses.
+2. COMMUNITY PAIN POINTS: What are real users complaining about with current solutions? Look for Reddit discussions, forums, and review sites.
+3. MARKET TRENDS: What are the current market trends, growth signals, and industry direction for this space? Any recent news or funding activity?
+4. PRICING BENCHMARKS: What do similar apps typically charge? What are users willing to pay?
+5. MARKET SIZE: Any data on the market size or total addressable market for this category?
+
+Be specific with names, URLs, and data points. This research will be used to validate the app idea.`;
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-search-preview",
+        web_search_options: {},
+        messages: [
+          { role: "user", content: researchPrompt },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("Web research API error:", error);
+      return "Web research unavailable. Proceeding with training data analysis.";
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content;
+    return content || "Web research returned no content.";
+  } catch (err) {
+    console.error("Web research fetch error:", err);
+    return "Web research unavailable due to network error. Proceeding with training data analysis.";
+  }
+}
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -128,9 +182,24 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    const appIdeaSummary = `App Name: ${body.name || "Untitled App"}
+Purpose: ${body.purpose || "Not specified"}
+Target Audience: ${body.target_audience || "Not specified"}
+Main Features: ${body.main_features || "Not specified"}
+Monetization: ${body.monetization || "Not specified"}`;
+
+    const webResearch = await runWebResearch(apiKey.trim(), appIdeaSummary);
+
     const openaiClient = new OpenAI({ apiKey: apiKey.trim() });
 
-    const userMessage = `Validate this app idea:
+    const userMessage = `## LIVE WEB RESEARCH
+The following research was gathered from the web specifically for this analysis. Use it to ground your scores and findings in real, current data:
+
+${webResearch}
+
+---
+
+## APP IDEA TO VALIDATE
 
 App Name: ${body.name || "Untitled App"}
 
@@ -147,7 +216,7 @@ ${body.design_notes ? body.design_notes.split("\n").filter((f: string) => f.trim
 Monetization Strategy:
 ${body.monetization || "Not specified"}
 
-Provide a thorough, honest analysis. Be specific with competitor names and realistic with pain points.`;
+Using the web research above as your primary source of truth, provide a thorough, honest analysis with specific competitor names, real pain points, and current market trends.`;
 
     const completion = await openaiClient.chat.completions.create({
       model: "gpt-4o",
@@ -157,7 +226,7 @@ Provide a thorough, honest analysis. Be specific with competitor names and reali
       ],
       temperature: 0,
       seed: 42,
-      max_tokens: 2000,
+      max_tokens: 3000,
       response_format: { type: "json_object" },
     });
 

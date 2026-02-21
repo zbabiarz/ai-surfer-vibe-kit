@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Shield, ChevronDown, ChevronUp, ExternalLink, AlertTriangle, Lightbulb, Target, TrendingUp, Zap, MessageSquare, Users, Rocket } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Shield, ChevronDown, ChevronUp, ExternalLink, AlertTriangle, Lightbulb, Target, TrendingUp, Zap, MessageSquare, Users, Rocket, Globe, BarChart2, Search } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 
@@ -22,6 +22,7 @@ interface Competitor {
   url: string;
   pricing: string;
   weakness: string;
+  description?: string;
 }
 
 interface ValidationResult {
@@ -35,6 +36,8 @@ interface ValidationResult {
   };
   competitors: Competitor[];
   redditSignals: string[];
+  marketTrends?: string[];
+  searchInsights?: string;
   yourEdge: string;
   biggestRisk: string;
   pivotSuggestions: string[];
@@ -43,6 +46,67 @@ interface ValidationResult {
 
 interface IdeaValidatorProps {
   formData: FormData;
+}
+
+const LOADING_STEPS = [
+  { label: 'Searching web for competitors', sublabel: 'Scanning product directories & review sites' },
+  { label: 'Finding community pain points', sublabel: 'Reading Reddit, forums & app store reviews' },
+  { label: 'Analyzing market trends', sublabel: 'Checking industry reports & funding signals' },
+  { label: 'Generating your scorecard', sublabel: 'Synthesizing research into actionable insights' },
+];
+
+function LoadingSteps({ activeStep }: { activeStep: number }) {
+  return (
+    <div className="mt-4 p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
+      <div className="flex items-center gap-3 mb-5">
+        <div className="w-7 h-7 border-[3px] border-blue-500 border-t-transparent rounded-full animate-spin flex-shrink-0" />
+        <div>
+          <p className="font-semibold text-gray-800 dark:text-gray-100 text-sm">Running deep market research...</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Searching multiple sources for a comprehensive analysis</p>
+        </div>
+      </div>
+      <div className="space-y-3">
+        {LOADING_STEPS.map((step, index) => {
+          const isDone = index < activeStep;
+          const isActive = index === activeStep;
+          return (
+            <div
+              key={index}
+              className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
+                isActive
+                  ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700'
+                  : isDone
+                  ? 'opacity-60'
+                  : 'opacity-30'
+              }`}
+            >
+              <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
+                {isDone ? (
+                  <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                ) : isActive ? (
+                  <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 rounded-full" />
+                )}
+              </div>
+              <div>
+                <p className={`text-sm font-medium ${isActive ? 'text-blue-700 dark:text-blue-300' : isDone ? 'text-gray-600 dark:text-gray-400 line-through' : 'text-gray-500 dark:text-gray-500'}`}>
+                  {step.label}
+                </p>
+                {isActive && (
+                  <p className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{step.sublabel}</p>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function ScoreBar({ label, score, reason, icon: Icon }: { label: string; score: number; reason: string; icon: React.ElementType }) {
@@ -96,10 +160,50 @@ function VerdictBadge({ verdict }: { verdict: "GO" | "MAYBE" | "PIVOT" }) {
   );
 }
 
+function LiveBadge() {
+  return (
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 text-xs font-semibold">
+      <Globe className="w-3 h-3" />
+      Live web search
+    </span>
+  );
+}
+
 export function IdeaValidator({ formData }: IdeaValidatorProps) {
   const [validating, setValidating] = useState(false);
   const [result, setResult] = useState<ValidationResult | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);
+  const [activeStep, setActiveStep] = useState(0);
+  const stepIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (validating) {
+      setActiveStep(0);
+      let step = 0;
+      const durations = [8000, 10000, 8000, 99999];
+      stepIntervalRef.current = setInterval(() => {
+        step += 1;
+        if (step < LOADING_STEPS.length) {
+          setActiveStep(step);
+          clearInterval(stepIntervalRef.current!);
+          stepIntervalRef.current = setInterval(() => {
+            step += 1;
+            if (step < LOADING_STEPS.length) {
+              setActiveStep(step);
+            }
+          }, durations[step] || 8000);
+        }
+      }, durations[0]);
+    } else {
+      if (stepIntervalRef.current) {
+        clearInterval(stepIntervalRef.current);
+        stepIntervalRef.current = null;
+      }
+    }
+    return () => {
+      if (stepIntervalRef.current) clearInterval(stepIntervalRef.current);
+    };
+  }, [validating]);
 
   const validateIdea = async () => {
     if (!formData.name && !formData.purpose) {
@@ -142,7 +246,7 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
       const data: ValidationResult = await res.json();
       setResult(data);
       setIsExpanded(true);
-      toast.success('Idea validated!');
+      toast.success('Analysis complete!');
     } catch (error) {
       console.error('Error validating idea:', error);
       const errorMessage = error instanceof Error
@@ -165,26 +269,19 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
       <button
         onClick={validateIdea}
         disabled={validating}
-        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-base"
-        style={{ boxShadow: '0 4px 20px rgba(139, 92, 246, 0.4)' }}
+        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-base"
+        style={{ boxShadow: '0 4px 20px rgba(37, 99, 235, 0.35)' }}
       >
-        <Shield className={`w-5 h-5 ${validating ? 'animate-pulse' : ''}`} />
+        <Search className={`w-5 h-5 ${validating ? 'animate-pulse' : ''}`} />
         <span>
-          {validating ? 'Analyzing Your Idea...' : 'Validate My Idea'}
+          {validating ? 'Researching & Analyzing...' : 'Deep Validate My Idea'}
         </span>
+        {!validating && (
+          <span className="ml-1 text-xs bg-white/20 px-2 py-0.5 rounded-full font-normal">Live Web Search</span>
+        )}
       </button>
 
-      {validating && (
-        <div className="mt-4 p-6 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 rounded-2xl border border-violet-200 dark:border-violet-800">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full animate-spin" />
-            <div>
-              <p className="font-semibold text-violet-700 dark:text-violet-300">Analyzing your app idea...</p>
-              <p className="text-sm text-violet-600 dark:text-violet-400">Researching market, competitors, and viability</p>
-            </div>
-          </div>
-        </div>
-      )}
+      {validating && <LoadingSteps activeStep={activeStep} />}
 
       {result && (
         <div className="mt-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -210,6 +307,14 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
 
           {isExpanded && (
             <div className="px-6 pb-6 space-y-6">
+
+              {result.searchInsights && (
+                <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
+                  <Globe className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{result.searchInsights}</p>
+                </div>
+              )}
+
               <div className="grid gap-4">
                 <ScoreBar
                   label="Market Need"
@@ -237,10 +342,29 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
                 />
               </div>
 
+              {result.marketTrends && result.marketTrends.length > 0 && (
+                <div className="bg-sky-50 dark:bg-sky-900/30 rounded-2xl p-5 border border-sky-200 dark:border-sky-800">
+                  <h4 className="flex items-center gap-2 text-sm font-extrabold uppercase text-sky-700 dark:text-sky-300 mb-3">
+                    <BarChart2 className="w-4 h-4" />
+                    Market Trends
+                    <span className="ml-auto"><LiveBadge /></span>
+                  </h4>
+                  <ul className="space-y-2">
+                    {result.marketTrends.map((trend, index) => (
+                      <li key={index} className="flex items-start gap-2 text-sm text-sky-800 dark:text-sky-200">
+                        <span className="text-sky-400 font-bold mt-0.5">↗</span>
+                        <span>{trend}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <div className="bg-blue-50 dark:bg-blue-900/30 rounded-2xl p-5 border border-blue-200 dark:border-blue-800">
                 <h4 className="flex items-center gap-2 text-sm font-extrabold uppercase text-blue-700 dark:text-blue-300 mb-3">
                   <MessageSquare className="w-4 h-4" />
                   Community Signals
+                  <span className="ml-auto"><LiveBadge /></span>
                 </h4>
                 <ul className="space-y-2">
                   {result.redditSignals.map((signal, index) => (
@@ -257,6 +381,7 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
                 <h4 className="flex items-center gap-2 text-sm font-extrabold uppercase text-orange-700 dark:text-orange-300 mb-3">
                   <Users className="w-4 h-4" />
                   Top Competitors
+                  <span className="ml-auto"><LiveBadge /></span>
                 </h4>
                 <div className="grid gap-3">
                   {result.competitors.map((competitor, index) => (
@@ -275,6 +400,9 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
                           {competitor.pricing}
                         </span>
                       </div>
+                      {competitor.description && (
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{competitor.description}</p>
+                      )}
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         <span className="font-medium text-orange-600 dark:text-orange-400">Weakness:</span> {competitor.weakness}
                       </p>
@@ -300,15 +428,15 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
               </div>
 
               {result.overallScore < 60 && result.pivotSuggestions && result.pivotSuggestions.length > 0 && (
-                <div className="bg-violet-50 dark:bg-violet-900/30 rounded-2xl p-5 border border-violet-200 dark:border-violet-800">
-                  <h4 className="flex items-center gap-2 text-sm font-extrabold uppercase text-violet-700 dark:text-violet-300 mb-3">
+                <div className="bg-amber-50 dark:bg-amber-900/30 rounded-2xl p-5 border border-amber-200 dark:border-amber-800">
+                  <h4 className="flex items-center gap-2 text-sm font-extrabold uppercase text-amber-700 dark:text-amber-300 mb-3">
                     <Rocket className="w-4 h-4" />
                     Pivot Suggestions
                   </h4>
                   <ul className="space-y-2">
                     {result.pivotSuggestions.map((suggestion, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm text-violet-800 dark:text-violet-200">
-                        <span className="text-violet-500 font-bold">{index + 1}.</span>
+                      <li key={index} className="flex items-start gap-2 text-sm text-amber-800 dark:text-amber-200">
+                        <span className="text-amber-500 font-bold">{index + 1}.</span>
                         <span>{suggestion}</span>
                       </li>
                     ))}
@@ -316,7 +444,7 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
                 </div>
               )}
 
-              <div className="bg-gradient-to-r from-violet-500 to-purple-500 rounded-2xl p-5 text-white">
+              <div className="bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl p-5 text-white">
                 <h4 className="flex items-center gap-2 text-sm font-extrabold uppercase mb-2">
                   <Zap className="w-4 h-4" />
                   Quick Win — Your Next Step
