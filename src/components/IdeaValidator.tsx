@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Shield, ChevronDown, ChevronUp, ExternalLink, AlertTriangle, Lightbulb, Target, TrendingUp, Zap, MessageSquare, Users, Rocket, Globe, BarChart2, Search } from 'lucide-react';
+import { ChevronDown, ChevronUp, ExternalLink, AlertTriangle, Lightbulb, Target, TrendingUp, Zap, MessageSquare, Users, Rocket, Globe, BarChart2, Search, Trash2, RefreshCw } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 
@@ -46,7 +46,11 @@ interface ValidationResult {
 
 interface IdeaValidatorProps {
   formData: FormData;
+  userId: string;
+  ideaId?: string;
 }
+
+const DAILY_LIMIT = 3;
 
 const LOADING_STEPS = [
   { label: 'Searching web for competitors', sublabel: 'Scanning product directories & review sites' },
@@ -110,17 +114,17 @@ function LoadingSteps({ activeStep }: { activeStep: number }) {
 }
 
 function ScoreBar({ label, score, reason, icon: Icon }: { label: string; score: number; reason: string; icon: React.ElementType }) {
-  const getBarColor = (score: number) => {
-    if (score >= 8) return 'from-emerald-400 to-emerald-500';
-    if (score >= 6) return 'from-amber-400 to-amber-500';
-    if (score >= 4) return 'from-orange-400 to-orange-500';
+  const getBarColor = (s: number) => {
+    if (s >= 8) return 'from-emerald-400 to-emerald-500';
+    if (s >= 6) return 'from-amber-400 to-amber-500';
+    if (s >= 4) return 'from-orange-400 to-orange-500';
     return 'from-red-400 to-red-500';
   };
 
-  const getTextColor = (score: number) => {
-    if (score >= 8) return 'text-emerald-600 dark:text-emerald-400';
-    if (score >= 6) return 'text-amber-600 dark:text-amber-400';
-    if (score >= 4) return 'text-orange-600 dark:text-orange-400';
+  const getTextColor = (s: number) => {
+    if (s >= 8) return 'text-emerald-600 dark:text-emerald-400';
+    if (s >= 6) return 'text-amber-600 dark:text-amber-400';
+    if (s >= 4) return 'text-orange-600 dark:text-orange-400';
     return 'text-red-600 dark:text-red-400';
   };
 
@@ -150,9 +154,7 @@ function VerdictBadge({ verdict }: { verdict: "GO" | "MAYBE" | "PIVOT" }) {
     MAYBE: { bg: 'bg-amber-100 dark:bg-amber-900/50', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
     PIVOT: { bg: 'bg-red-100 dark:bg-red-900/50', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-700' },
   };
-
   const { bg, text, border } = config[verdict];
-
   return (
     <span className={`px-4 py-2 rounded-full font-bold text-lg ${bg} ${text} border-2 ${border}`}>
       {verdict}
@@ -169,12 +171,83 @@ function LiveBadge() {
   );
 }
 
-export function IdeaValidator({ formData }: IdeaValidatorProps) {
+function UsagePips({ used, limit }: { used: number; limit: number }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      {Array.from({ length: limit }).map((_, i) => (
+        <div
+          key={i}
+          className={`w-2.5 h-2.5 rounded-full transition-colors ${
+            i < used
+              ? 'bg-red-400 dark:bg-red-500'
+              : 'bg-gray-200 dark:bg-gray-600'
+          }`}
+        />
+      ))}
+      <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">{used}/{limit} today</span>
+    </div>
+  );
+}
+
+export function IdeaValidator({ formData, userId, ideaId }: IdeaValidatorProps) {
   const [validating, setValidating] = useState(false);
   const [result, setResult] = useState<ValidationResult | null>(null);
+  const [savedValidationId, setSavedValidationId] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
+  const [usedToday, setUsedToday] = useState(0);
+  const [loadingExisting, setLoadingExisting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const stepIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const fetchDailyUsage = async () => {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const { count } = await supabase
+      .from('validation_usage')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .gte('created_at', todayStart.toISOString());
+    setUsedToday(count ?? 0);
+  };
+
+  const loadExistingValidation = async (id: string) => {
+    setLoadingExisting(true);
+    try {
+      const { data, error } = await supabase
+        .from('idea_validations')
+        .select('id, result')
+        .eq('app_idea_id', id)
+        .maybeSingle();
+      if (error) throw error;
+      if (data) {
+        setResult(data.result as ValidationResult);
+        setSavedValidationId(data.id);
+        setIsExpanded(true);
+      } else {
+        setResult(null);
+        setSavedValidationId(null);
+      }
+    } catch (err) {
+      console.error('Error loading existing validation:', err);
+    } finally {
+      setLoadingExisting(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDailyUsage();
+  }, [userId]);
+
+  useEffect(() => {
+    if (ideaId) {
+      loadExistingValidation(ideaId);
+    } else {
+      setResult(null);
+      setSavedValidationId(null);
+    }
+  }, [ideaId]);
 
   useEffect(() => {
     if (validating) {
@@ -205,9 +278,44 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
     };
   }, [validating]);
 
+  const saveValidationResult = async (validationResult: ValidationResult) => {
+    if (!ideaId) return;
+    try {
+      const { data, error } = await supabase
+        .from('idea_validations')
+        .upsert(
+          { user_id: userId, app_idea_id: ideaId, result: validationResult },
+          { onConflict: 'app_idea_id' }
+        )
+        .select('id')
+        .maybeSingle();
+      if (error) throw error;
+      if (data) setSavedValidationId(data.id);
+    } catch (err) {
+      console.error('Error saving validation:', err);
+    }
+  };
+
+  const logUsageAttempt = async () => {
+    await supabase
+      .from('validation_usage')
+      .insert({ user_id: userId });
+    await fetchDailyUsage();
+  };
+
   const validateIdea = async () => {
     if (!formData.name && !formData.purpose) {
       toast.error('Please fill in the App Name or "What does your app do?" field first.');
+      return;
+    }
+
+    if (usedToday >= DAILY_LIMIT) {
+      toast.error(`You've used all ${DAILY_LIMIT} validations for today. Come back tomorrow!`, { duration: 5000 });
+      return;
+    }
+
+    if (!ideaId) {
+      toast.error('Please save your idea first before running a validation.');
       return;
     }
 
@@ -244,9 +352,15 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
       }
 
       const data: ValidationResult = await res.json();
+
+      await Promise.all([
+        logUsageAttempt(),
+        saveValidationResult(data),
+      ]);
+
       setResult(data);
       setIsExpanded(true);
-      toast.success('Analysis complete!');
+      toast.success('Analysis complete and saved!');
     } catch (error) {
       console.error('Error validating idea:', error);
       const errorMessage = error instanceof Error
@@ -258,38 +372,98 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
     }
   };
 
+  const deleteValidation = async () => {
+    if (!savedValidationId) return;
+    setDeleting(true);
+    try {
+      const { error } = await supabase
+        .from('idea_validations')
+        .delete()
+        .eq('id', savedValidationId);
+      if (error) throw error;
+      setResult(null);
+      setSavedValidationId(null);
+      setShowDeleteConfirm(false);
+      toast.success('Analysis deleted.');
+    } catch (err) {
+      console.error('Error deleting validation:', err);
+      toast.error('Failed to delete. Please try again.');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const getScoreColor = (score: number) => {
     if (score >= 70) return 'text-emerald-600 dark:text-emerald-400';
     if (score >= 50) return 'text-amber-600 dark:text-amber-400';
     return 'text-red-600 dark:text-red-400';
   };
 
+  const isAtLimit = usedToday >= DAILY_LIMIT;
+  const canValidate = !isAtLimit && !!ideaId;
+
   return (
     <div className="mb-6">
+      <div className="flex items-center justify-between mb-2">
+        <UsagePips used={usedToday} limit={DAILY_LIMIT} />
+        {!ideaId && (
+          <p className="text-xs text-gray-400 dark:text-gray-500">Save your idea to enable validation</p>
+        )}
+      </div>
+
       <button
         onClick={validateIdea}
-        disabled={validating}
-        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-base"
-        style={{ boxShadow: '0 4px 20px rgba(37, 99, 235, 0.35)' }}
+        disabled={validating || isAtLimit || !ideaId}
+        className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl shadow-lg transition-all duration-300 transform font-semibold text-base
+          ${canValidate && !validating
+            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white hover:scale-[1.02] hover:shadow-xl'
+            : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+          }`}
+        style={canValidate && !validating ? { boxShadow: '0 4px 20px rgba(37, 99, 235, 0.35)' } : {}}
       >
-        <Search className={`w-5 h-5 ${validating ? 'animate-pulse' : ''}`} />
-        <span>
-          {validating ? 'Researching & Analyzing...' : 'Deep Validate My Idea'}
-        </span>
-        {!validating && (
-          <span className="ml-1 text-xs bg-white/20 px-2 py-0.5 rounded-full font-normal">Live Web Search</span>
+        {result && !validating ? (
+          <>
+            <RefreshCw className={`w-5 h-5 ${validating ? 'animate-spin' : ''}`} />
+            <span>Re-run Analysis</span>
+            <span className="ml-1 text-xs bg-white/20 px-2 py-0.5 rounded-full font-normal">
+              uses 1 of {DAILY_LIMIT - usedToday} left
+            </span>
+          </>
+        ) : (
+          <>
+            <Search className={`w-5 h-5 ${validating ? 'animate-pulse' : ''}`} />
+            <span>
+              {validating ? 'Researching & Analyzing...' : isAtLimit ? 'Daily limit reached' : 'Deep Validate My Idea'}
+            </span>
+            {!validating && !isAtLimit && (
+              <span className="ml-1 text-xs bg-white/20 px-2 py-0.5 rounded-full font-normal">Live Web Search</span>
+            )}
+          </>
         )}
       </button>
 
+      {isAtLimit && (
+        <p className="text-center text-xs text-red-500 dark:text-red-400 mt-2">
+          You've used all {DAILY_LIMIT} validations for today. Resets at midnight.
+        </p>
+      )}
+
       {validating && <LoadingSteps activeStep={activeStep} />}
 
-      {result && (
+      {loadingExisting && (
+        <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400 py-4">
+          <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+          Loading saved analysis...
+        </div>
+      )}
+
+      {result && !validating && (
         <div className="mt-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="w-full flex items-center justify-between p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-          >
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between pr-4 border-b border-gray-100 dark:border-gray-700">
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="flex-1 flex items-center gap-4 p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-left"
+            >
               <div className="flex flex-col items-center">
                 <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium mb-0.5">Overall Score</p>
                 <div className={`text-5xl font-extrabold leading-none ${getScoreColor(result.overallScore)}`}>
@@ -297,16 +471,44 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
                 </div>
               </div>
               <VerdictBadge verdict={result.verdict} />
+              {isExpanded ? (
+                <ChevronUp className="w-5 h-5 text-gray-400 ml-auto" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-400 ml-auto" />
+              )}
+            </button>
+
+            <div className="flex-shrink-0">
+              {showDeleteConfirm ? (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowDeleteConfirm(false)}
+                    className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 px-2 py-1"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={deleteValidation}
+                    disabled={deleting}
+                    className="text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg font-medium transition-colors disabled:opacity-50"
+                  >
+                    {deleting ? 'Deleting...' : 'Confirm delete'}
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="p-2 text-gray-400 hover:text-red-500 dark:hover:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                  title="Delete this analysis"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
             </div>
-            {isExpanded ? (
-              <ChevronUp className="w-6 h-6 text-gray-400" />
-            ) : (
-              <ChevronDown className="w-6 h-6 text-gray-400" />
-            )}
-          </button>
+          </div>
 
           {isExpanded && (
-            <div className="px-6 pb-6 space-y-6">
+            <div className="px-6 pb-6 pt-4 space-y-6">
 
               {result.searchInsights && (
                 <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">

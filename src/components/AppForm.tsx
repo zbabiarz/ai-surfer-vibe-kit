@@ -67,32 +67,28 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
 
       let error;
 
-      if (selectedIdea?.id) {
+      if (selectedIdea?.id || formData.id) {
+        const ideaId = selectedIdea?.id || formData.id!;
         const { error: updateError } = await supabase
           .from('app_ideas')
           .update(dataToSave)
-          .eq('id', selectedIdea.id);
+          .eq('id', ideaId);
         error = updateError;
       } else {
-        const { error: insertError } = await supabase
+        const { data: inserted, error: insertError } = await supabase
           .from('app_ideas')
-          .insert(dataToSave);
+          .insert(dataToSave)
+          .select('id')
+          .maybeSingle();
         error = insertError;
+        if (!insertError && inserted) {
+          setFormData(prev => ({ ...prev, id: inserted.id }));
+        }
       }
 
       if (error) throw error;
 
-      setFormData({
-        name: '',
-        purpose: '',
-        target_audience: '',
-        main_features: '',
-        design_notes: '',
-        monetization: '',
-        user_id: userId,
-      });
-
-      toast.success(selectedIdea?.id ? 'Idea updated!' : 'New idea saved!');
+      toast.success(selectedIdea?.id || formData.id ? 'Idea updated!' : 'New idea saved!');
     } catch (error) {
       console.error('Error saving data:', error);
       toast.error('Failed to save progress');
@@ -536,7 +532,7 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
             ))}
           </div>
           <div className="mt-6 space-y-4">
-            <IdeaValidator formData={formData} />
+            <IdeaValidator formData={formData} userId={userId} ideaId={formData.id} />
             <div className="flex justify-end">
               <button
                 onClick={generatePrompt}
