@@ -49,13 +49,15 @@ const SYSTEM_PROMPT = `You are a ruthlessly honest startup analyst and market re
 
 Analyze the provided app idea and return a JSON scorecard. Be specific, cite real competitors, and give actionable feedback.
 
+CONSISTENCY REQUIREMENT: You must apply the scoring criteria mechanically and deterministically. For identical inputs you must always produce identical scores. Do not vary your scores between runs. Commit to a score and do not second-guess it.
+
 IMPORTANT SCORING GUIDELINES:
 - marketNeed (1-10): How badly do people need this? Look for evidence of existing demand, pain points being discussed online, and whether people are actively searching for solutions.
 - competition (1-10): Higher score = BETTER for the founder. 10 means blue ocean with no competitors, 1 means saturated market with dominant players. Consider market saturation and barriers to entry.
 - monetization (1-10): How viable is the revenue model? Consider willingness to pay, pricing power, and recurring revenue potential.
 - feasibility (1-10): Can a solo developer or small team build this with no-code/low-code tools? Consider technical complexity and time to MVP.
 
-overallScore calculation: (marketNeed * 0.30) + (competition * 0.20) + (monetization * 0.30) + (feasibility * 0.20), then multiply by 10 to get 1-100 scale.
+overallScore calculation: You MUST compute this exactly: (marketNeed * 0.30) + (competition * 0.20) + (monetization * 0.30) + (feasibility * 0.20), then multiply by 10 and round to the nearest integer. Do not estimate or approximate this value — calculate it precisely from the four sub-scores you assign.
 
 verdict rules:
 - "GO" if overallScore >= 70
@@ -153,7 +155,8 @@ Provide a thorough, honest analysis. Be specific with competitor names and reali
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: userMessage },
       ],
-      temperature: 0.4,
+      temperature: 0,
+      seed: 42,
       max_tokens: 2000,
       response_format: { type: "json_object" },
     });
