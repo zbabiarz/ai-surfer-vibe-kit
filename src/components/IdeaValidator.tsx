@@ -193,13 +193,13 @@ export function IdeaValidator({ formData }: IdeaValidatorProps) {
             className="w-full flex items-center justify-between p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
           >
             <div className="flex items-center gap-4">
-              <div className={`text-5xl font-extrabold ${getScoreColor(result.overallScore)}`}>
-                {result.overallScore}
+              <div className="flex flex-col items-center">
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium mb-0.5">Overall Score</p>
+                <div className={`text-5xl font-extrabold leading-none ${getScoreColor(result.overallScore)}`}>
+                  {result.overallScore}
+                </div>
               </div>
-              <div className="text-left">
-                <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Overall Score</p>
-                <VerdictBadge verdict={result.verdict} />
-              </div>
+              <VerdictBadge verdict={result.verdict} />
             </div>
             {isExpanded ? (
               <ChevronUp className="w-6 h-6 text-gray-400" />
