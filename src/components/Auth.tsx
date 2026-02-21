@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { LogIn } from 'lucide-react';
+import { LogIn, ArrowLeft, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { countryCodes, CountryCode } from '../data/countryCodes';
+
+type AuthView = 'signin' | 'signup' | 'forgot-password';
 
 export function Auth() {
   const [loading, setLoading] = useState(false);
@@ -9,8 +12,11 @@ export function Auth() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [selectedCountry, setSelectedCountry] = useState<CountryCode>(countryCodes[0]);
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const [view, setView] = useState<AuthView>('signup');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
 
   const validatePassword = (password: string) => {
     if (password.length < 6) {
@@ -26,33 +32,52 @@ export function Auth() {
 
   const validatePhone = (phone: string) => {
     const digits = phone.replace(/\D/g, '');
-    return digits.length === 10;
+    return digits.length >= 6 && digits.length <= 15;
   };
 
-  const formatPhone = (phone: string) => {
+  const formatPhoneForStorage = (phone: string, country: CountryCode) => {
     const digits = phone.replace(/\D/g, '');
-    if (digits.length === 10) {
-      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-    }
-    return phone;
+    return `${country.dialCode} ${digits}`;
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
+    const value = e.target.value;
     const digits = value.replace(/\D/g, '');
+    if (digits.length <= 15) {
+      setPhone(digits);
+    }
+  };
 
-    if (digits.length > 10) {
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
+      toast.error('Please enter your email address');
       return;
     }
 
-    let formattedPhone = digits;
-    if (digits.length >= 6) {
-      formattedPhone = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-    } else if (digits.length >= 3) {
-      formattedPhone = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    if (!validateEmail(trimmedEmail)) {
+      toast.error('Please enter a valid email address');
+      return;
     }
 
-    setPhone(formattedPhone);
+    try {
+      setLoading(true);
+      const { error } = await supabase.auth.resetPasswordForEmail(trimmedEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
+      if (error) throw error;
+
+      setResetEmailSent(true);
+      toast.success('Password reset email sent! Check your inbox.');
+    } catch (error) {
+      console.error('Password reset error:', error);
+      toast.error('Failed to send reset email. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,13 +97,12 @@ export function Auth() {
       return;
     }
 
-
     if (!validateEmail(trimmedEmail)) {
       toast.error('Please enter a valid email address (e.g., user@example.com)');
       return;
     }
 
-    if (isSignUp) {
+    if (view === 'signup') {
       if (!trimmedName) {
         toast.error('Full name is required');
         return;
@@ -90,13 +114,10 @@ export function Auth() {
       }
 
       if (!validatePhone(trimmedPhone)) {
-        toast.error('Please enter exactly 10 digits for your US phone number');
+        toast.error('Please enter a valid phone number (6-15 digits)');
         return;
       }
-    }
 
-
-    if (isSignUp) {
       const passwordErrors = validatePassword(password);
       if (passwordErrors.length > 0) {
         toast.error(`Password must contain ${passwordErrors.join(', ')}`);
@@ -112,7 +133,7 @@ export function Auth() {
     try {
       setLoading(true);
 
-      if (isSignUp) {
+      if (view === 'signup') {
         const { data, error } = await supabase.auth.signUp({
           email: trimmedEmail,
           password: password,
@@ -132,7 +153,7 @@ export function Auth() {
             .insert({
               id: data.user.id,
               name: trimmedName,
-              phone: formatPhone(trimmedPhone),
+              phone: formatPhoneForStorage(trimmedPhone, selectedCountry),
               email: trimmedEmail,
             });
 
@@ -145,7 +166,7 @@ export function Auth() {
 
         if (data?.user) {
           toast.success('Account created! You can now sign in');
-          setIsSignUp(false);
+          setView('signin');
           setEmail('');
           setPassword('');
           setName('');
@@ -162,13 +183,11 @@ export function Auth() {
           if (error.message === 'Invalid login credentials') {
             toast.error('Invalid email or password. Please check your credentials and try again.', {
               duration: 5000,
-              icon: '⚠️'
             });
             return;
           } else if (error.message.includes('Email not confirmed')) {
             toast.error('Please confirm your email address before signing in. Check your inbox for the confirmation link.', {
               duration: 5000,
-              icon: '📧'
             });
             return;
           } else {
@@ -179,7 +198,7 @@ export function Auth() {
         toast.success('Successfully signed in!');
       }
     } catch (error) {
-      toast.error(error.message, {
+      toast.error((error as Error).message, {
         duration: 4000
       });
       setPassword('');
@@ -187,6 +206,86 @@ export function Auth() {
       setLoading(false);
     }
   };
+
+  const switchView = (newView: AuthView) => {
+    setView(newView);
+    setEmail('');
+    setPassword('');
+    setResetEmailSent(false);
+  };
+
+  if (view === 'forgot-password') {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md mx-auto transition-colors">
+        <img
+          src="https://storage.googleapis.com/msgsndr/QFjnAi2H2A9Cpxi7l0ri/media/699097ce772de9472c02c5ac.png"
+          alt="Welcome to The AI Surfer"
+          className="h-48 object-contain mb-6"
+        />
+
+        <button
+          onClick={() => switchView('signin')}
+          className="self-start flex items-center gap-2 text-white hover:text-white/80 mb-4 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Sign In</span>
+        </button>
+
+        <h2 className="text-xl font-bold text-white mb-2">Reset Your Password</h2>
+
+        {resetEmailSent ? (
+          <div className="text-center">
+            <div className="bg-white/20 rounded-lg p-6 mb-4">
+              <p className="text-white mb-4">
+                We've sent a password reset link to <strong>{email}</strong>
+              </p>
+              <p className="text-white/80 text-sm">
+                Check your inbox and click the link to reset your password. The link will expire in 1 hour.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                setResetEmailSent(false);
+                setEmail('');
+              }}
+              className="text-white underline hover:text-white/80 text-sm"
+            >
+              Try a different email
+            </button>
+          </div>
+        ) : (
+          <>
+            <p className="text-white/90 mb-6 text-center text-sm">
+              Enter your email address and we'll send you a link to reset your password.
+            </p>
+            <form onSubmit={handleForgotPassword} className="w-full space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-white text-gray-900"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-white text-black font-medium py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
+                disabled={loading}
+              >
+                {loading ? 'Sending...' : 'Send Reset Link'}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md mx-auto transition-colors">
@@ -198,13 +297,9 @@ export function Auth() {
       <div className="flex gap-4 mb-4">
         <button
           type="button"
-          onClick={() => {
-            setIsSignUp(false);
-            setEmail('');
-            setPassword('');
-          }}
+          onClick={() => switchView('signin')}
           className={`px-6 py-2 rounded-lg transition-colors border-2 font-medium ${
-            !isSignUp
+            view === 'signin'
               ? 'bg-white text-black border-white'
               : 'bg-black text-white border-black hover:bg-gray-800'
           }`}
@@ -213,13 +308,9 @@ export function Auth() {
         </button>
         <button
           type="button"
-          onClick={() => {
-            setIsSignUp(true);
-            setEmail('');
-            setPassword('');
-          }}
+          onClick={() => switchView('signup')}
           className={`px-6 py-2 rounded-lg transition-colors border-2 font-medium ${
-            isSignUp
+            view === 'signup'
               ? 'bg-white text-black border-white'
               : 'bg-black text-white border-black hover:bg-gray-800'
           }`}
@@ -228,10 +319,10 @@ export function Auth() {
         </button>
       </div>
       <p className="text-white dark:text-white mb-6 text-center transition-colors">
-        {isSignUp ? 'Create a new account to get started' : 'Welcome back! Sign in to continue'}
+        {view === 'signup' ? 'Create a new account to get started' : 'Welcome back! Sign in to continue'}
       </p>
       <form onSubmit={handleSubmit} className="w-full space-y-4">
-        {isSignUp && (
+        {view === 'signup' && (
           <div>
             <label className="block text-sm font-medium text-white dark:text-white mb-1 transition-colors">
               Full Name *
@@ -241,27 +332,58 @@ export function Auth() {
               placeholder="Enter full name here"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required={isSignUp}
+              required={view === 'signup'}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors"
             />
           </div>
         )}
-        {isSignUp && (
+        {view === 'signup' && (
           <div>
             <label className="block text-sm font-medium text-white dark:text-white mb-1 transition-colors">
               Phone Number *
             </label>
-            <input
-              type="tel"
-              placeholder="Enter valid phone number here"
-              value={phone}
-              onChange={handlePhoneChange}
-              required={isSignUp}
-              maxLength={14}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors"
-            />
+            <div className="flex gap-2">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                  className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 min-w-[100px] justify-between"
+                >
+                  <span className="text-sm">{selectedCountry.dialCode}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                {showCountryDropdown && (
+                  <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50">
+                    {countryCodes.map((country) => (
+                      <button
+                        key={country.code}
+                        type="button"
+                        onClick={() => {
+                          setSelectedCountry(country);
+                          setShowCountryDropdown(false);
+                        }}
+                        className={`w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm flex justify-between items-center ${
+                          selectedCountry.code === country.code ? 'bg-brand-100 dark:bg-brand-900/30' : ''
+                        }`}
+                      >
+                        <span className="text-gray-900 dark:text-gray-100">{country.name}</span>
+                        <span className="text-gray-500 dark:text-gray-400">{country.dialCode}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <input
+                type="tel"
+                placeholder="Phone number"
+                value={phone}
+                onChange={handlePhoneChange}
+                required={view === 'signup'}
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors"
+              />
+            </div>
             <p className="mt-1 text-xs text-white/80 dark:text-white/80">
-              Enter exactly 10 digits for your US phone number
+              Select your country and enter your phone number
             </p>
           </div>
         )}
@@ -285,14 +407,14 @@ export function Auth() {
           </label>
           <input
             type="password"
-            placeholder={isSignUp ? "Create a strong password" : "Enter your password"}
+            placeholder={view === 'signup' ? "Create a strong password" : "Enter your password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            autoComplete={isSignUp ? "new-password" : "current-password"}
+            autoComplete={view === 'signup' ? "new-password" : "current-password"}
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors"
           />
-          {isSignUp && (
+          {view === 'signup' && (
             <div className="mt-2 text-sm text-white transition-colors">
               <p className={password.length >= 6 ? 'text-green-800' : 'text-red-800'}>
                   At least 6 characters
@@ -300,14 +422,25 @@ export function Auth() {
             </div>
           )}
         </div>
+
+        {view === 'signin' && (
+          <button
+            type="button"
+            onClick={() => switchView('forgot-password')}
+            className="text-white/90 hover:text-white text-sm underline transition-colors"
+          >
+            Forgot your password?
+          </button>
+        )}
+
         <button
           type="submit"
           className="w-full bg-white text-black font-medium py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
           disabled={loading}
         >
-          {loading ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}
+          {loading ? 'Processing...' : (view === 'signup' ? 'Create Account' : 'Sign In')}
         </button>
-        {isSignUp && (
+        {view === 'signup' && (
           <div className="flex items-start gap-2 mt-3">
             <input
               type="checkbox"
