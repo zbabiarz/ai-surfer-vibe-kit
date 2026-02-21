@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Save, Trash2, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { IdeaValidator } from './IdeaValidator';
 
 interface AppIdea {
   id?: string;
@@ -534,18 +535,21 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
               </button>
             ))}
           </div>
-          <div className="flex justify-end mt-4">
-            <button
-              onClick={generatePrompt}
-              disabled={generating}
-              className="flex items-center gap-2 bg-gradient-to-r from-brand-400 to-accent1-400 hover:from-brand-500 hover:to-accent1-500 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-base whitespace-nowrap"
-              style={{ boxShadow: '0 4px 20px rgba(247, 138, 140, 0.4)' }}
-            >
-              <Sparkles className="w-5 h-5" />
-              <span>
-                {generating ? 'Generating...' : 'Generate Prompt'}
-              </span>
-            </button>
+          <div className="mt-6 space-y-4">
+            <IdeaValidator formData={formData} />
+            <div className="flex justify-end">
+              <button
+                onClick={generatePrompt}
+                disabled={generating}
+                className="flex items-center gap-2 bg-gradient-to-r from-brand-400 to-accent1-400 hover:from-brand-500 hover:to-accent1-500 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-base whitespace-nowrap"
+                style={{ boxShadow: '0 4px 20px rgba(247, 138, 140, 0.4)' }}
+              >
+                <Sparkles className="w-5 h-5" />
+                <span>
+                  {generating ? 'Generating...' : 'Generate Prompt'}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
