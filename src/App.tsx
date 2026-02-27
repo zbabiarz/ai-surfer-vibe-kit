@@ -11,7 +11,7 @@ import { PreMadePrompts } from './components/PreMadePrompts';
 import { FreeAPIs } from './components/FreeAPIs';
 import { IDEList } from './components/IDEList';
 import { IdeaGenerator } from './components/IdeaGenerator';
-import { LogOut, ExternalLink, Github, Users, Youtube, Send, Phone, Gamepad2, Play, X, Music, Paintbrush2 } from 'lucide-react';
+import { LogOut, ExternalLink, Github, Users, Send, Gamepad2, Play, X, Music, Paintbrush2 } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 
 interface AppIdea {
@@ -85,6 +85,15 @@ export default function App() {
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               <PreMadePrompts onSelectPrompt={(prompt) => setGeneratedPrompt(prompt)} />
               <FreeAPIs />
+              <a
+                href="https://open.spotify.com/playlist/6ShbEV1621eRllS7ZL0JCM?si=f2tbX1sfQKap6YaBZ-DqgA&pi=OZ3Hqx86SUSeh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 bg-[#1DB954] hover:bg-[#1aa34a] text-white px-3 py-2 rounded-lg shadow-sm transition-colors whitespace-nowrap text-sm font-medium"
+              >
+                <Music className="w-4 h-4" />
+                <span>Zach's Vibes</span>
+              </a>
               <DarkModeToggle />
               <button
                 onClick={handleSignOut}
@@ -236,33 +245,6 @@ export default function App() {
                 iconClassName="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1"
                 labelClassName="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2"
               />
-              <a
-                href="https://www.youtube.com/@Zach_Babiarz_AI"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(240,107,110,0.6)] transform hover:-translate-y-1 font-medium"
-              >
-                <Youtube className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Zach's Youtube</span>
-              </a>
-              <a
-                href="https://open.spotify.com/playlist/6ShbEV1621eRllS7ZL0JCM?si=f2tbX1sfQKap6YaBZ-DqgA&pi=OZ3Hqx86SUSeh"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-[#1DB954] hover:bg-[#1aa34a] text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(29,185,84,0.6)] transform hover:-translate-y-1 font-medium"
-              >
-                <Music className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Zach's Vibes</span>
-              </a>
-              <a
-                href="https://link.coachmatixmail.com/widget/booking/qZ3MgiU9ussrrr0wtCxc"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-accent3-400 hover:bg-accent3-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(200,113,196,0.6)] transform hover:-translate-y-1 font-medium"
-              >
-                <Phone className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Book a Call with Zach</span>
-              </a>
             </div>
           </div>
         </div>
