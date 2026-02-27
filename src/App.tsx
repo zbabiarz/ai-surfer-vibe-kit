@@ -11,7 +11,7 @@ import { PreMadePrompts } from './components/PreMadePrompts';
 import { FreeAPIs } from './components/FreeAPIs';
 import { IDEList } from './components/IDEList';
 import { IdeaGenerator } from './components/IdeaGenerator';
-import { LogOut, ExternalLink, Github, Users, Send, Gamepad2, Play, X, Music, Paintbrush2, ChevronDown } from 'lucide-react';
+import { LogOut, ExternalLink, Github, Users, Send, Gamepad2, Play, X, Music, Paintbrush2, ChevronDown, CalendarCheck } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 
 interface AppIdea {
@@ -263,6 +263,15 @@ export default function App() {
                   iconClassName="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1"
                   labelClassName="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2"
                 />
+                <a
+                  href="https://link.coachmatixmail.com/widget/booking/qZ3MgiU9ussrrr0wtCxc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(247,138,140,0.6)] transform hover:-translate-y-1 font-medium"
+                >
+                  <CalendarCheck className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Book 1-on-1 Help Call</span>
+                </a>
               </div>
             </div>
 
