@@ -166,28 +166,28 @@ export default function App() {
                 href="https://bolt.new/?rid=l3uyub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-brand-400 hover:bg-brand-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(247,138,140,0.6)] transform hover:-translate-y-1 font-medium"
+                className="group flex items-center justify-center gap-1 sm:gap-2 bg-brand-400 hover:bg-brand-500 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(247,138,140,0.6)] transform hover:-translate-y-1 font-medium"
               >
                 <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Bolt.new</span>
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">Bolt.new</span>
               </a>
               <a
                 href="https://wisprflow.ai/r?ZACH38"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-accent1-400 hover:bg-accent1-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(244,138,183,0.6)] transform hover:-translate-y-1 font-medium"
+                className="group flex items-center justify-center gap-1 sm:gap-2 bg-accent1-400 hover:bg-accent1-500 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(244,138,183,0.6)] transform hover:-translate-y-1 font-medium"
               >
                 <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Wispr Flow</span>
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">Wispr Flow</span>
               </a>
               <a
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-neutral-dark hover:bg-neutral-dark/80 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(74,74,74,0.4)] transform hover:-translate-y-1 font-medium"
+                className="group flex items-center justify-center gap-1 sm:gap-2 bg-neutral-dark hover:bg-neutral-dark/80 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(74,74,74,0.4)] transform hover:-translate-y-1 font-medium"
               >
                 <Github className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">GitHub</span>
+                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">GitHub</span>
               </a>
             </div>
 
@@ -201,76 +201,76 @@ export default function App() {
                   href="https://theaisurfer.com/training?am_id=zachbabiarz372"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 bg-accent2-400 hover:bg-accent2-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(218,123,180,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-1 sm:gap-2 bg-accent2-400 hover:bg-accent2-500 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(218,123,180,0.6)] transform hover:-translate-y-1 font-medium min-h-[52px]"
                 >
                   <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">AI Surfer Mastermind</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">AI Surfer Mastermind</span>
                 </a>
                 <a
                   href="https://21st.dev/community/components"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(2,132,199,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-1 sm:gap-2 bg-sky-600 hover:bg-sky-700 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(2,132,199,0.6)] transform hover:-translate-y-1 font-medium"
                 >
                   <Paintbrush2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Design Components & Usage</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">Design Components & Usage</span>
                 </a>
                 <a
                   href="https://chat.whatsapp.com/JuUZxvRRZMsEBoZQbvbhDc"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 bg-[#FFA07A] hover:bg-[#FF8C5A] text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(255,160,122,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-1 sm:gap-2 bg-[#FFA07A] hover:bg-[#FF8C5A] text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(255,160,122,0.6)] transform hover:-translate-y-1 font-medium"
                 >
                   <Users className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">AI Surfer Cohort Community</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">AI Surfer Cohort Community</span>
                 </a>
                 <a
                   href="https://link.coachmatixmail.com/widget/form/zyHqKCKcHdqw5ibKYT6v"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 bg-accent1-500 hover:bg-accent1-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(240,109,163,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-1 sm:gap-2 bg-accent1-500 hover:bg-accent1-600 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(240,109,163,0.6)] transform hover:-translate-y-1 font-medium"
                 >
                   <Send className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Feedback Form</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">Feedback Form</span>
                 </a>
                 <Link
                   to="/terminology-game"
-                  className="group flex items-center justify-center gap-2 bg-accent2-500 hover:bg-accent2-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(208,96,163,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-1 sm:gap-2 bg-accent2-500 hover:bg-accent2-600 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(208,96,163,0.6)] transform hover:-translate-y-1 font-medium"
                 >
                   <Gamepad2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Terminology Game</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">Terminology Game</span>
                 </Link>
                 <a
                   href="https://open.spotify.com/playlist/6ShbEV1621eRllS7ZL0JCM?si=f2tbX1sfQKap6YaBZ-DqgA&pi=OZ3Hqx86SUSeh"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 bg-[#1DB954] hover:bg-[#1aa34a] text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(29,185,84,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-1 sm:gap-2 bg-[#1DB954] hover:bg-[#1aa34a] text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(29,185,84,0.6)] transform hover:-translate-y-1 font-medium"
                 >
                   <Music className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Zach's Vibes</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">Zach's Vibes</span>
                 </a>
                 <a
                   href="https://tutsflow.com/free-open-source-icon-libraries/#3-lucide-icons"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(245,158,11,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-1 sm:gap-2 bg-amber-500 hover:bg-amber-600 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(245,158,11,0.6)] transform hover:-translate-y-1 font-medium"
                 >
                   <Paintbrush2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Icon Libraries</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">Icon Libraries</span>
                 </a>
                 <IDEList
-                  buttonClassName="group flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 font-medium w-full"
+                  buttonClassName="group flex items-center justify-center gap-1 sm:gap-2 bg-teal-600 hover:bg-teal-700 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 font-medium w-full"
                   iconClassName="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1"
-                  labelClassName="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2"
+                  labelClassName="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center"
                 />
                 <a
                   href="https://link.coachmatixmail.com/widget/booking/qZ3MgiU9ussrrr0wtCxc"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(247,138,140,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-1 sm:gap-2 bg-brand-500 hover:bg-brand-600 text-white px-2 py-2 sm:px-4 sm:py-3 rounded-lg transition-all duration-300 shadow-md min-h-[52px] hover:shadow-[0_0_20px_rgba(247,138,140,0.6)] transform hover:-translate-y-1 font-medium"
                 >
                   <CalendarCheck className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Book 1-on-1 Help Call</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2 text-xs sm:text-sm leading-tight text-center">Book 1-on-1 Help Call</span>
                 </a>
               </div>
             </div>
