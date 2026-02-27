@@ -216,7 +216,8 @@ export function Auth() {
 
   if (view === 'forgot-password') {
     return (
-      <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md mx-auto transition-colors">
+      <div className="min-h-screen w-full bg-brand-400 dark:bg-brand-500 flex items-center justify-center p-4 transition-colors">
+        <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
         <img
           src="https://storage.googleapis.com/msgsndr/QFjnAi2H2A9Cpxi7l0ri/media/699097ce772de9472c02c5ac.png"
           alt="Welcome to The AI Surfer"
@@ -283,12 +284,14 @@ export function Auth() {
             </form>
           </>
         )}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md mx-auto transition-colors">
+    <div className="min-h-screen w-full bg-brand-400 dark:bg-brand-500 flex items-center justify-center p-4 transition-colors">
+      <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
       <img
         src="https://storage.googleapis.com/msgsndr/QFjnAi2H2A9Cpxi7l0ri/media/699097ce772de9472c02c5ac.png"
         alt="Welcome to The AI Surfer"
@@ -455,6 +458,7 @@ export function Auth() {
           </div>
         )}
       </form>
+      </div>
     </div>
   );
 }
