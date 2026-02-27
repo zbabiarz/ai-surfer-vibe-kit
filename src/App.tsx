@@ -11,7 +11,7 @@ import { PreMadePrompts } from './components/PreMadePrompts';
 import { FreeAPIs } from './components/FreeAPIs';
 import { IDEList } from './components/IDEList';
 import { IdeaGenerator } from './components/IdeaGenerator';
-import { LogOut, ExternalLink, Github, Users, Send, Gamepad2, Play, X, Music, Paintbrush2 } from 'lucide-react';
+import { LogOut, ExternalLink, Github, Users, Send, Gamepad2, Play, X, Music, Paintbrush2, ChevronDown } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 
 interface AppIdea {
@@ -33,6 +33,7 @@ export default function App() {
   const [selectedIdea, setSelectedIdea] = useState<AppIdea | null>(null);
   const [showLoadIdea, setShowLoadIdea] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showAllTools, setShowAllTools] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -197,54 +198,73 @@ export default function App() {
                 <Github className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
                 <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">GitHub</span>
               </a>
-              <a
-                href="https://theaisurfer.com/training?am_id=zachbabiarz372"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-accent2-400 hover:bg-accent2-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(218,123,180,0.6)] transform hover:-translate-y-1 font-medium"
+            </div>
+
+            <div
+              className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                showAllTools ? 'max-h-[600px] opacity-100 mt-3' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <a
+                  href="https://theaisurfer.com/training?am_id=zachbabiarz372"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2 bg-accent2-400 hover:bg-accent2-500 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(218,123,180,0.6)] transform hover:-translate-y-1 font-medium"
+                >
+                  <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">AI Surfer Mastermind</span>
+                </a>
+                <a
+                  href="https://21st.dev/community/components"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(2,132,199,0.6)] transform hover:-translate-y-1 font-medium"
+                >
+                  <Paintbrush2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Design Components & Usage</span>
+                </a>
+                <a
+                  href="https://chat.whatsapp.com/JuUZxvRRZMsEBoZQbvbhDc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2 bg-[#00F0FF] hover:bg-[#00d4e0] text-neutral-dark px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] transform hover:-translate-y-1 font-medium"
+                >
+                  <Users className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Cohort Community</span>
+                </a>
+                <a
+                  href="https://link.coachmatixmail.com/widget/form/zyHqKCKcHdqw5ibKYT6v"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2 bg-accent1-500 hover:bg-accent1-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(240,109,163,0.6)] transform hover:-translate-y-1 font-medium"
+                >
+                  <Send className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Feedback Form</span>
+                </a>
+                <Link
+                  to="/terminology-game"
+                  className="group flex items-center justify-center gap-2 bg-accent2-500 hover:bg-accent2-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(208,96,163,0.6)] transform hover:-translate-y-1 font-medium"
+                >
+                  <Gamepad2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Terminology Game</span>
+                </Link>
+                <IDEList
+                  buttonClassName="group flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 font-medium w-full"
+                  iconClassName="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1"
+                  labelClassName="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={() => setShowAllTools(!showAllTools)}
+                className="flex items-center gap-2 text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300 transition-colors"
               >
-                <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">AI Surfer Mastermind</span>
-              </a>
-              <a
-                href="https://21st.dev/community/components"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(2,132,199,0.6)] transform hover:-translate-y-1 font-medium"
-              >
-                <Paintbrush2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Design Components & Usage</span>
-              </a>
-              <a
-                href="https://chat.whatsapp.com/JuUZxvRRZMsEBoZQbvbhDc"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-[#00F0FF] hover:bg-[#00d4e0] text-neutral-dark px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] transform hover:-translate-y-1 font-medium"
-              >
-                <Users className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Cohort Community</span>
-              </a>
-              <a
-                href="https://link.coachmatixmail.com/widget/form/zyHqKCKcHdqw5ibKYT6v"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 bg-accent1-500 hover:bg-accent1-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(240,109,163,0.6)] transform hover:-translate-y-1 font-medium"
-              >
-                <Send className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Feedback Form</span>
-              </a>
-              <Link
-                to="/terminology-game"
-                className="group flex items-center justify-center gap-2 bg-accent2-500 hover:bg-accent2-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(208,96,163,0.6)] transform hover:-translate-y-1 font-medium"
-              >
-                <Gamepad2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Terminology Game</span>
-              </Link>
-              <IDEList
-                buttonClassName="group flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 font-medium w-full"
-                iconClassName="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1"
-                labelClassName="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2"
-              />
+                <span>{showAllTools ? 'Show less' : 'Show more tools'}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showAllTools ? 'rotate-180' : ''}`} />
+              </button>
             </div>
           </div>
         </div>
