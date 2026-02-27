@@ -217,11 +217,11 @@ export function Auth() {
   if (view === 'forgot-password') {
     return (
       <div className="min-h-screen w-full bg-brand-400 dark:bg-brand-500 flex items-center justify-center p-4 transition-colors">
-        <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
+        <div className="flex flex-col items-center justify-center p-4 sm:p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
         <img
           src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg"
           alt="Welcome to The AI Surfer"
-          className="h-48 object-contain mb-6"
+          className="h-28 sm:h-40 w-auto object-contain mb-4 sm:mb-6"
         />
 
         <button
@@ -291,17 +291,17 @@ export function Auth() {
 
   return (
     <div className="min-h-screen w-full bg-brand-400 dark:bg-brand-500 flex items-center justify-center p-4 transition-colors">
-      <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
+      <div className="flex flex-col items-center justify-center p-4 sm:p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
       <img
         src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg"
         alt="Welcome to The AI Surfer"
-        className="h-48 object-contain mb-6"
+        className="h-28 sm:h-40 w-auto object-contain mb-4 sm:mb-6"
       />
-      <div className="flex gap-4 mb-4">
+      <div className="flex w-full gap-2 mb-4">
         <button
           type="button"
           onClick={() => switchView('signin')}
-          className={`px-6 py-2 rounded-lg transition-colors border-2 font-medium ${
+          className={`flex-1 py-2.5 rounded-lg transition-colors border-2 font-medium text-sm sm:text-base ${
             view === 'signin'
               ? 'bg-white text-black border-white'
               : 'bg-black text-white border-black hover:bg-gray-800'
@@ -312,7 +312,7 @@ export function Auth() {
         <button
           type="button"
           onClick={() => switchView('signup')}
-          className={`px-6 py-2 rounded-lg transition-colors border-2 font-medium ${
+          className={`flex-1 py-2.5 rounded-lg transition-colors border-2 font-medium text-sm sm:text-base ${
             view === 'signup'
               ? 'bg-white text-black border-white'
               : 'bg-black text-white border-black hover:bg-gray-800'
@@ -321,7 +321,7 @@ export function Auth() {
           Create Account
         </button>
       </div>
-      <p className="text-white dark:text-white mb-6 text-center transition-colors">
+      <p className="text-white dark:text-white mb-4 text-center text-sm sm:text-base transition-colors">
         {view === 'signup' ? 'Create a new account to get started' : 'Welcome back! Sign in to continue'}
       </p>
       <form onSubmit={handleSubmit} className="w-full space-y-4">
@@ -356,7 +356,7 @@ export function Auth() {
                   <ChevronDown className="w-4 h-4" />
                 </button>
                 {showCountryDropdown && (
-                  <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50">
+                  <div className="absolute top-full left-0 mt-1 w-56 max-h-52 overflow-y-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50">
                     {countryCodes.map((country) => (
                       <button
                         key={country.code}

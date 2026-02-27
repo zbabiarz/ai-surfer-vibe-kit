@@ -328,11 +328,11 @@ export function IdeaGenerator({ onUseIdea, userId }: IdeaGeneratorProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <Lightbulb className="w-6 h-6 text-yellow-500" />
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200">
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500 flex-shrink-0" />
+          <h2 className="text-lg sm:text-2xl font-bold text-gray-800 dark:text-gray-100">
             Need an Idea? (Optional step)
           </h2>
         </div>
@@ -351,28 +351,28 @@ export function IdeaGenerator({ onUseIdea, userId }: IdeaGeneratorProps) {
           <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
             Stuck on what to build? Let us help you find the perfect project idea!
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <button
               onClick={handleInstantGenerate}
               disabled={loading}
-              className="group relative flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-brand-400 to-accent1-400 hover:from-brand-500 hover:to-accent1-500 text-white p-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(247,138,140,0.5)] transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative flex flex-col items-center justify-center gap-2 sm:gap-3 bg-gradient-to-br from-brand-400 to-accent1-400 hover:from-brand-500 hover:to-accent1-500 text-white p-5 sm:p-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(247,138,140,0.5)] transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Sparkles className="w-10 h-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
+              <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
               <div className="text-center">
-                <div className="text-xl font-bold mb-1">Give Me My Idea</div>
-                <div className="text-sm opacity-90">Get a random app idea instantly</div>
+                <div className="text-base sm:text-xl font-bold mb-0.5 sm:mb-1">Give Me My Idea</div>
+                <div className="text-xs sm:text-sm opacity-90">Get a random app idea instantly</div>
               </div>
             </button>
 
             <button
               onClick={handleStartConversation}
               disabled={loading}
-              className="group relative flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-accent2-400 to-[#00F0FF] hover:from-accent2-500 hover:to-[#00d4e0] text-white p-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(218,123,180,0.5)] transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative flex flex-col items-center justify-center gap-2 sm:gap-3 bg-gradient-to-br from-accent2-400 to-[#00F0FF] hover:from-accent2-500 hover:to-[#00d4e0] text-white p-5 sm:p-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(218,123,180,0.5)] transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <MessageCircle className="w-10 h-10 transition-transform duration-300 group-hover:scale-110" />
+              <MessageCircle className="w-8 h-8 sm:w-10 sm:h-10 transition-transform duration-300 group-hover:scale-110" />
               <div className="text-center">
-                <div className="text-xl font-bold mb-1">Help Me Find an Idea</div>
-                <div className="text-sm opacity-90">Answer a few questions for personalized suggestions</div>
+                <div className="text-base sm:text-xl font-bold mb-0.5 sm:mb-1">Help Me Find an Idea</div>
+                <div className="text-xs sm:text-sm opacity-90">Answer a few questions for personalized suggestions</div>
               </div>
             </button>
           </div>
@@ -483,19 +483,19 @@ export function IdeaGenerator({ onUseIdea, userId }: IdeaGeneratorProps) {
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
               onClick={handleUseThisIdea}
-              className="flex-1 flex items-center justify-center gap-2 bg-brand-400 hover:bg-brand-500 text-white px-6 py-3 rounded-lg transition-colors font-medium shadow-lg hover:shadow-xl"
+              className="flex-1 flex items-center justify-center gap-2 bg-brand-400 hover:bg-brand-500 text-white px-4 sm:px-6 py-3 rounded-lg transition-colors font-medium shadow-lg hover:shadow-xl text-sm sm:text-base"
             >
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               Use This Idea
             </button>
             <button
               onClick={mode === 'instant' ? handleInstantGenerate : handleReset}
-              className="flex items-center justify-center gap-2 bg-neutral-dark hover:bg-neutral-dark/80 text-white px-6 py-3 rounded-lg transition-colors font-medium"
+              className="flex items-center justify-center gap-2 bg-neutral-dark hover:bg-neutral-dark/80 text-white px-4 sm:px-6 py-3 rounded-lg transition-colors font-medium text-sm sm:text-base"
             >
-              <RefreshCw className="w-5 h-5" />
+              <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
               {mode === 'instant' ? 'Generate Another' : 'Start Over'}
             </button>
           </div>

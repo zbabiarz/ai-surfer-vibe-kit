@@ -52,10 +52,10 @@ export function InitialPrompt({ generatedPrompt, onPromptChange, userId }: Initi
 
   return (
     <>
-      <div className="bg-gradient-to-br from-white to-brand-200/30 dark:from-gray-800 dark:to-gray-800/50 p-8 rounded-2xl shadow-xl border border-brand-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-2xl">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
-          <h2 className="text-3xl font-extrabold uppercase bg-gradient-to-r from-brand-500 to-brand-400 dark:from-brand-400 dark:to-brand-200 bg-clip-text text-transparent flex items-center gap-2">
-            <FileText className="w-8 h-8 text-brand-500 dark:text-brand-400" />
+      <div className="bg-gradient-to-br from-white to-brand-200/30 dark:from-gray-800 dark:to-gray-800/50 p-4 sm:p-8 rounded-2xl shadow-xl border border-brand-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-2xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-3xl font-extrabold uppercase bg-gradient-to-r from-brand-500 to-brand-400 dark:from-brand-400 dark:to-brand-200 bg-clip-text text-transparent flex items-center gap-2">
+            <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-brand-500 dark:text-brand-400 flex-shrink-0" />
             {hasEnhanced ? 'Prompt Comparison' : 'Initial App Foundational Prompt'}
           </h2>
           <div className="flex flex-wrap gap-2">

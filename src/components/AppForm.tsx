@@ -215,12 +215,12 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200 overflow-hidden app-form">
       <button
         onClick={() => setIsOpen(prev => !prev)}
-        className="w-full bg-gradient-to-r from-brand-400 to-accent1-400 dark:from-brand-500 dark:to-accent1-500 px-6 py-4 flex items-center justify-between gap-4 hover:from-brand-500 hover:to-accent1-500 transition-all duration-300 group"
+        className="w-full bg-gradient-to-r from-brand-400 to-accent1-400 dark:from-brand-500 dark:to-accent1-500 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3 hover:from-brand-500 hover:to-accent1-500 transition-all duration-300 group"
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <ClipboardList className="w-5 h-5 text-white flex-shrink-0" />
-          <div className="text-left">
-            <h2 className="text-xl font-extrabold uppercase text-white leading-tight">Plan Your App Idea</h2>
+          <div className="text-left min-w-0">
+            <h2 className="text-base sm:text-xl font-extrabold uppercase text-white leading-tight">Plan Your App Idea</h2>
             {!isOpen && formData.name && (
               <p className="text-white/75 text-sm font-medium truncate max-w-xs mt-0.5">{formData.name}</p>
             )}
@@ -237,8 +237,8 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
           isOpen ? 'max-h-[9999px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="p-8">
-          <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
+        <div className="p-4 sm:p-8">
+          <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={saveData}
@@ -278,7 +278,7 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
               type="button"
               onClick={generateAppName}
               disabled={generatingName}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
+              className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 whitespace-nowrap"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>{generatingName ? 'Generating...' : 'Generate random name'}</span>

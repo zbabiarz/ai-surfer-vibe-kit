@@ -68,28 +68,28 @@ export default function App() {
       <Toaster position="top-right" />
 
       <header className="bg-brand-400 dark:bg-brand-500 border-b border-brand-500 dark:border-brand-600 transition-colors duration-200">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="container mx-auto px-4 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
             <div>
               <img
                 src={LOGO_URL}
                 alt="The AI Surfer"
-                className="h-32 w-auto mb-2"
+                className="h-20 sm:h-32 w-auto mb-1 sm:mb-2"
               />
-              <h1 className="text-2xl font-extrabold uppercase text-white">
+              <h1 className="text-lg sm:text-2xl font-extrabold uppercase text-white leading-tight">
                 Your Idea. Your App. No Code.
               </h1>
-              <p className="text-white/90 italic text-sm">
+              <p className="text-white/90 italic text-xs sm:text-sm">
                 The No-Code Revolution Starts Here.
               </p>
             </div>
-            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
               <PreMadePrompts onSelectPrompt={(prompt) => setGeneratedPrompt(prompt)} />
               <FreeAPIs />
               <DarkModeToggle />
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-2 bg-white hover:bg-neutral-light text-neutral-dark px-4 py-2 rounded-lg shadow-sm transition-colors whitespace-nowrap"
+                className="flex items-center gap-2 bg-white hover:bg-neutral-light text-neutral-dark px-3 sm:px-4 py-2 rounded-lg shadow-sm transition-colors whitespace-nowrap text-sm"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
@@ -99,15 +99,15 @@ export default function App() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200">
-          <h2 className="text-xl font-extrabold uppercase text-neutral-dark dark:text-gray-100 mb-4 text-center">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl space-y-4 sm:space-y-8">
+        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200">
+          <h2 className="text-base sm:text-xl font-extrabold uppercase text-neutral-dark dark:text-gray-100 mb-3 sm:mb-4 text-center">
             How to use this platform
           </h2>
           <div className="flex justify-center">
             <button
               onClick={() => setShowVideoModal(true)}
-              className="group relative flex items-center justify-center gap-3 bg-gradient-to-r from-brand-400 to-brand-500 hover:from-brand-500 hover:to-brand-600 text-white px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(247,138,140,0.7)] transform hover:-translate-y-1 font-semibold text-lg animate-pulse hover:animate-none"
+              className="group relative flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-brand-400 to-brand-500 hover:from-brand-500 hover:to-brand-600 text-white px-5 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(247,138,140,0.7)] transform hover:-translate-y-1 font-semibold text-sm sm:text-lg animate-pulse hover:animate-none"
             >
               <Play className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
               <span className="transition-transform duration-300">Watch Overview Video</span>
@@ -151,17 +151,17 @@ export default function App() {
         />
 
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-brand-400 to-brand-500 dark:from-brand-500 dark:to-brand-600 px-6 py-3">
+          <div className="bg-gradient-to-r from-brand-400 to-brand-500 dark:from-brand-500 dark:to-brand-600 px-4 sm:px-6 py-3">
             <div className="flex justify-center mb-2">
               <div className="w-16 h-2 bg-white/30 rounded-full" />
             </div>
             <div className="flex items-center justify-center gap-2">
-              <ExternalLink className="w-5 h-5 text-white" />
-              <h2 className="text-2xl font-extrabold uppercase text-white">Vibe Coder Toolkit Quicklinks</h2>
+              <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              <h2 className="text-lg sm:text-2xl font-extrabold uppercase text-white">Vibe Coder Toolkit Quicklinks</h2>
             </div>
           </div>
-          <div className="p-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="p-3 sm:p-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               <a
                 href="https://bolt.new/?rid=l3uyub"
                 target="_blank"
@@ -196,7 +196,7 @@ export default function App() {
                 showAllTools ? 'max-h-[600px] opacity-100 mt-3' : 'max-h-0 opacity-0'
               }`}
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                 <a
                   href="https://theaisurfer.com/training?am_id=zachbabiarz372"
                   target="_blank"
