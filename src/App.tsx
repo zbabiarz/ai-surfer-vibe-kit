@@ -25,7 +25,7 @@ interface AppIdea {
   user_id: string;
 }
 
-const LOGO_URL = 'https://storage.googleapis.com/msgsndr/QFjnAi2H2A9Cpxi7l0ri/media/699097ce772de9472c02c5ac.png';
+const LOGO_URL = 'https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg';
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
