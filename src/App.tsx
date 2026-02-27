@@ -86,15 +86,6 @@ export default function App() {
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               <PreMadePrompts onSelectPrompt={(prompt) => setGeneratedPrompt(prompt)} />
               <FreeAPIs />
-              <a
-                href="https://open.spotify.com/playlist/6ShbEV1621eRllS7ZL0JCM?si=f2tbX1sfQKap6YaBZ-DqgA&pi=OZ3Hqx86SUSeh"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 bg-[#1DB954] hover:bg-[#1aa34a] text-white px-3 py-2 rounded-lg shadow-sm transition-colors whitespace-nowrap text-sm font-medium"
-              >
-                <Music className="w-4 h-4" />
-                <span>Zach's Vibes</span>
-              </a>
               <DarkModeToggle />
               <button
                 onClick={handleSignOut}
@@ -228,10 +219,10 @@ export default function App() {
                   href="https://chat.whatsapp.com/JuUZxvRRZMsEBoZQbvbhDc"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 bg-[#00F0FF] hover:bg-[#00d4e0] text-neutral-dark px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] transform hover:-translate-y-1 font-medium"
+                  className="group flex items-center justify-center gap-2 bg-[#FFA07A] hover:bg-[#FF8C5A] text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(255,160,122,0.6)] transform hover:-translate-y-1 font-medium"
                 >
                   <Users className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
-                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Cohort Community</span>
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">AI Surfer Cohort Community</span>
                 </a>
                 <a
                   href="https://link.coachmatixmail.com/widget/form/zyHqKCKcHdqw5ibKYT6v"
@@ -249,6 +240,24 @@ export default function App() {
                   <Gamepad2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
                   <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Terminology Game</span>
                 </Link>
+                <a
+                  href="https://open.spotify.com/playlist/6ShbEV1621eRllS7ZL0JCM?si=f2tbX1sfQKap6YaBZ-DqgA&pi=OZ3Hqx86SUSeh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2 bg-[#1DB954] hover:bg-[#1aa34a] text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(29,185,84,0.6)] transform hover:-translate-y-1 font-medium"
+                >
+                  <Music className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Zach's Vibes</span>
+                </a>
+                <a
+                  href="https://tutsflow.com/free-open-source-icon-libraries/#3-lucide-icons"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(245,158,11,0.6)] transform hover:-translate-y-1 font-medium"
+                >
+                  <Paintbrush2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1" />
+                  <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-2">Icon Libraries</span>
+                </a>
                 <IDEList
                   buttonClassName="group flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 font-medium w-full"
                   iconClassName="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:-translate-y-1"
