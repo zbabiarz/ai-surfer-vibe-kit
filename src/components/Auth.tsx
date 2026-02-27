@@ -14,7 +14,7 @@ export function Auth() {
   const [phone, setPhone] = useState('');
   const [selectedCountry, setSelectedCountry] = useState<CountryCode>(countryCodes[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const [view, setView] = useState<AuthView>('signup');
+  const [view, setView] = useState<AuthView>('signin');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
 
@@ -219,7 +219,7 @@ export function Auth() {
       <div className="min-h-screen w-full bg-brand-400 dark:bg-brand-500 flex items-center justify-center p-4 transition-colors">
         <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
         <img
-          src="https://storage.googleapis.com/msgsndr/QFjnAi2H2A9Cpxi7l0ri/media/699097ce772de9472c02c5ac.png"
+          src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg"
           alt="Welcome to The AI Surfer"
           className="h-48 object-contain mb-6"
         />
@@ -293,7 +293,7 @@ export function Auth() {
     <div className="min-h-screen w-full bg-brand-400 dark:bg-brand-500 flex items-center justify-center p-4 transition-colors">
       <div className="flex flex-col items-center justify-center p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
       <img
-        src="https://storage.googleapis.com/msgsndr/QFjnAi2H2A9Cpxi7l0ri/media/699097ce772de9472c02c5ac.png"
+        src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg"
         alt="Welcome to The AI Surfer"
         className="h-48 object-contain mb-6"
       />
