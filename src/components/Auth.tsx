@@ -221,7 +221,7 @@ export function Auth() {
         <img
           src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg"
           alt="Welcome to The AI Surfer"
-          className="h-28 sm:h-40 w-auto object-contain mb-4 sm:mb-6"
+          className="h-44 sm:h-56 w-auto object-contain mx-auto mb-8 sm:mb-10"
         />
 
         <button
@@ -295,7 +295,7 @@ export function Auth() {
       <img
         src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg"
         alt="Welcome to The AI Surfer"
-        className="h-28 sm:h-40 w-auto object-contain mb-4 sm:mb-6"
+        className="h-44 sm:h-56 w-auto object-contain mx-auto mb-8 sm:mb-10"
       />
       <div className="flex w-full gap-2 mb-4">
         <button
