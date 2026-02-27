@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Save, Trash2, Sparkles } from 'lucide-react';
+import { Save, Trash2, Sparkles, ChevronDown, ClipboardList } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { IdeaValidator } from './IdeaValidator';
 
@@ -35,6 +35,7 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
   const [saving, setSaving] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [generatingName, setGeneratingName] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     if (selectedIdea) {
@@ -211,39 +212,63 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-brand-50/30 dark:from-gray-800 dark:to-gray-800/50 p-8 rounded-2xl shadow-xl border border-brand-200/50 dark:border-gray-700/50 app-form transition-all duration-300 hover:shadow-2xl">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h2 className="text-3xl font-extrabold uppercase bg-gradient-to-r from-brand-400 to-accent1-400 dark:from-brand-400 dark:to-accent1-400 bg-clip-text text-transparent">Plan Your App Idea</h2>
-        <div className="flex gap-2 flex-wrap">
-          <button
-            onClick={saveData}
-            disabled={saving}
-            className="flex items-center gap-2 bg-gradient-to-r from-brand-400 to-brand-500 hover:from-brand-500 hover:to-brand-600 text-white px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium whitespace-nowrap"
-          >
-            <Save className="w-4 h-4" />
-            <span>
-              {saving ? 'Saving...' : selectedIdea?.id ? 'Update Idea' : 'Save New Idea'}
-            </span>
-          </button>
-          <button
-            onClick={() => setFormData({
-              name: '',
-              purpose: '',
-              target_audience: '',
-              main_features: '',
-              design_notes: '',
-              monetization: '',
-              user_id: userId,
-            })}
-            className="flex items-center gap-2 bg-neutral-dark hover:bg-neutral-dark/80 text-white px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-sm font-medium whitespace-nowrap"
-          >
-            <Trash2 className="w-4 h-4" />
-            <span>Clear Form</span>
-          </button>
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-brand-200 dark:border-gray-700 transition-colors duration-200 overflow-hidden app-form">
+      <button
+        onClick={() => setIsOpen(prev => !prev)}
+        className="w-full bg-gradient-to-r from-brand-400 to-accent1-400 dark:from-brand-500 dark:to-accent1-500 px-6 py-4 flex items-center justify-between gap-4 hover:from-brand-500 hover:to-accent1-500 transition-all duration-300 group"
+      >
+        <div className="flex items-center gap-3">
+          <ClipboardList className="w-5 h-5 text-white flex-shrink-0" />
+          <div className="text-left">
+            <h2 className="text-xl font-extrabold uppercase text-white leading-tight">Plan Your App Idea</h2>
+            {!isOpen && formData.name && (
+              <p className="text-white/75 text-sm font-medium truncate max-w-xs mt-0.5">{formData.name}</p>
+            )}
+            {!isOpen && !formData.name && (
+              <p className="text-white/60 text-sm mt-0.5">Click to fill in your app details</p>
+            )}
+          </div>
         </div>
-      </div>
+        <ChevronDown className={`w-5 h-5 text-white flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
 
-      <div className="space-y-6">
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+          isOpen ? 'max-h-[9999px] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="p-8">
+          <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
+            <div className="flex gap-2 flex-wrap">
+              <button
+                onClick={saveData}
+                disabled={saving}
+                className="flex items-center gap-2 bg-gradient-to-r from-brand-400 to-brand-500 hover:from-brand-500 hover:to-brand-600 text-white px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium whitespace-nowrap"
+              >
+                <Save className="w-4 h-4" />
+                <span>
+                  {saving ? 'Saving...' : selectedIdea?.id ? 'Update Idea' : 'Save New Idea'}
+                </span>
+              </button>
+              <button
+                onClick={() => setFormData({
+                  name: '',
+                  purpose: '',
+                  target_audience: '',
+                  main_features: '',
+                  design_notes: '',
+                  monetization: '',
+                  user_id: userId,
+                })}
+                className="flex items-center gap-2 bg-neutral-dark hover:bg-neutral-dark/80 text-white px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-sm font-medium whitespace-nowrap"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Clear Form</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-6">
         <div className="group">
           <div className="flex items-center justify-between mb-2">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors group-hover:text-brand-400 dark:group-hover:text-brand-400">
@@ -547,6 +572,8 @@ export function AppForm({ userId, onGeneratePrompt, selectedIdea }: AppFormProps
               </button>
             </div>
           </div>
+        </div>
+      </div>
         </div>
       </div>
     </div>
