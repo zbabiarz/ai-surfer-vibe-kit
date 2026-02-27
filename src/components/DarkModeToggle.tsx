@@ -14,13 +14,11 @@ export function DarkModeToggle() {
         <>
           <Sun className="w-4 h-4" />
           <span className="hidden sm:inline">Light</span>
-          <span className="sm:hidden">L</span>
         </>
       ) : (
         <>
           <Moon className="w-4 h-4" />
           <span className="hidden sm:inline">Dark</span>
-          <span className="sm:hidden">D</span>
         </>
       )}
     </button>
