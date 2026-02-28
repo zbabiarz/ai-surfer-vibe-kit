@@ -219,7 +219,7 @@ export function Auth() {
       <div className="min-h-screen w-full bg-brand-400 dark:bg-brand-500 flex items-center justify-center p-4 transition-colors">
         <div className="flex flex-col items-center justify-center p-4 sm:p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
         <img
-          src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg"
+          src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a23c17917b4b33601c779a.png"
           alt="Welcome to The AI Surfer"
           className="h-44 sm:h-56 w-auto object-contain mx-auto mb-8 sm:mb-10"
         />
@@ -293,7 +293,7 @@ export function Auth() {
     <div className="min-h-screen w-full bg-brand-400 dark:bg-brand-500 flex items-center justify-center p-4 transition-colors">
       <div className="flex flex-col items-center justify-center p-4 sm:p-8 bg-brand-400 dark:bg-brand-500 rounded-lg shadow-lg max-w-md w-full transition-colors">
       <img
-        src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a1f6a06e50d655f82ba763.jpg"
+        src="https://assets.cdn.filesafe.space/QFjnAi2H2A9Cpxi7l0ri/media/69a23c17917b4b33601c779a.png"
         alt="Welcome to The AI Surfer"
         className="h-44 sm:h-56 w-auto object-contain mx-auto mb-8 sm:mb-10"
       />
